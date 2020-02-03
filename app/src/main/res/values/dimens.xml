@@ -1,0 +1,9 @@
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- FaceGraphic dimensions -->
+    <dimen name="eyeOutlineStroke">5dp</dimen>
+    <dimen name="textSize">10dp</dimen>
+    <dimen name="hintStroke">3dp</dimen>
+</resources>
