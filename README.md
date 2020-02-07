@@ -20,7 +20,7 @@ This was accomplished by the use of google's mobile vision library that eases fa
 ## Part 2
 In this section, we demonstrate the use of ***Machine Learning*** on top of machine learning: ```google's mobile vision is already an AI library```
 <div>
-	<div style="width:100%;height:0;padding-bottom:61%;position:relative;"><iframe src="https://giphy.com/embed/1BdJd24oEwvuSvXYb0" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/reaction-robot-1BdJd24oEwvuSvXYb0">via GIPHY</a></p>
+	<img src="https://media.giphy.com/media/1BdJd24oEwvuSvXYb0/giphy.gif">
 </div>
 As an attempt to add more flavor to AR, we employed ML in facial emotion detection. 
 <p><em>Tensorflow was our choice framework for ML.</em></p>
