@@ -64,7 +64,10 @@ public class FaceData {
     private PointF mMouthLeftPosition;
     private PointF mMouthBottomPosition;
     private PointF mMouthRightPosition;
+    private boolean hasEmotionData;
 
+    private String emotion;
+    private float emotionCoef;
 
     public int getId() {
         return mId;
@@ -234,4 +237,27 @@ public class FaceData {
         this.mMouthRightPosition = mouthRightPosition;
     }
 
+    public void setHasEmotionData(boolean hasEmotionData) {
+        this.hasEmotionData = hasEmotionData;
+    }
+
+    public boolean hasEmotionData() {
+        return hasEmotionData;
+    }
+
+    public String getEmotion() {
+        return emotion;
+    }
+
+    public void setEmotion(String emotion) {
+        this.emotion = emotion;
+    }
+
+    public float getEmotionCoef() {
+        return emotionCoef;
+    }
+
+    public void setEmotionCoef(float emotionCoef) {
+        this.emotionCoef = emotionCoef;
+    }
 }

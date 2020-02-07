@@ -39,6 +39,7 @@ import com.google.android.gms.vision.face.FaceDetector;
 import com.google.android.gms.vision.face.Landmark;
 import com.icam.customUI.GraphicOverlay;
 import com.icam.models.FaceData;
+import com.icam.models.FaceEmotions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +55,8 @@ public class FaceTracker extends Tracker<Face> {
     private FaceData mFaceData;
     private boolean mPreviousIsLeftEyeOpen = true;
     private boolean mPreviousIsRightEyeOpen = true;
+    private boolean trackEmotions;
+    private TensorFlowClassifier mClassifier;
 
     // Subjects may move too quickly to for the system to detect their detect features,
     // or they may move so their features are out of the tracker's detection range.
@@ -66,6 +69,7 @@ public class FaceTracker extends Tracker<Face> {
         mContext = context;
         mIsFrontFacing = isFrontFacing;
         mFaceData = new FaceData();
+        mFaceData.setHasEmotionData(false);
     }
 
     @Override

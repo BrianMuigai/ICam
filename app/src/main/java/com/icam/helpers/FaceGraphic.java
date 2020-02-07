@@ -35,14 +35,19 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.icam.R;
 import com.icam.customUI.GraphicOverlay;
 import com.icam.models.FaceData;
+import com.icam.models.FaceEmotions;
 
 
 class FaceGraphic extends GraphicOverlay.Graphic {
 
+    private static final int PIXEL_WIDTH = 48;
+
+    private TensorFlowClassifier classifier;
     private static final String TAG = "FaceGraphic";
 
     private static final float DOT_RADIUS = 3.0f;
@@ -66,6 +71,12 @@ class FaceGraphic extends GraphicOverlay.Graphic {
     private Drawable mMustacheGraphic;
     private Drawable mHappyStarGraphic;
     private Drawable mHatGraphic;
+    private Drawable angryGraphic;
+    private Drawable disgustGraphic;
+    private Drawable fearGraphic;
+    private Drawable happyGraphic;
+    private Drawable sadGraphic;
+    private Drawable surprisedGraphic;
 
     // We want each iris to move independently, so each one gets its own physics engine.
     private EyePhysics mLeftPhysics = new EyePhysics();
@@ -85,6 +96,13 @@ class FaceGraphic extends GraphicOverlay.Graphic {
         mMustacheGraphic = resources.getDrawable(R.drawable.mustache);
         mHappyStarGraphic = resources.getDrawable(R.drawable.happy_star);
         mHatGraphic = resources.getDrawable(R.drawable.red_hat);
+        angryGraphic = resources.getDrawable(R.drawable.angry);
+        disgustGraphic = resources.getDrawable(R.drawable.disgust);
+        fearGraphic = resources.getDrawable(R.drawable.fear);
+        happyGraphic = resources.getDrawable(R.drawable.happy);
+        sadGraphic = resources.getDrawable(R.drawable.sad);
+        surprisedGraphic = resources.getDrawable(R.drawable.suprised);
+
     }
 
     private void initializePaints(Resources resources) {
@@ -122,13 +140,63 @@ class FaceGraphic extends GraphicOverlay.Graphic {
 
     @Override
     public void draw(Canvas canvas) {
-        drawCartoon(canvas);
+        if (mFaceData.hasEmotionData()) {
+            drawEmoji(canvas);
+        } else {
+            drawCartoon(canvas);
+        }
+    }
+
+    private void drawEmoji(Canvas canvas){
+        if (mFaceData == null)
+            return;
+        Drawable emoji = null;
+        switch (mFaceData.getEmotion()) {
+            case FaceEmotions.ANGRY:
+                emoji = angryGraphic;
+                break;
+            case FaceEmotions.DISGUST:
+                emoji = disgustGraphic;
+                break;
+            case FaceEmotions.FEAR:
+                emoji = fearGraphic;
+                break;
+            case FaceEmotions.HAPPY:
+                emoji = happyGraphic;
+                break;
+            case FaceEmotions.SAD:
+                emoji = sadGraphic;
+                break;
+            case FaceEmotions.SUPRISE:
+                emoji = surprisedGraphic;
+                break;
+        }
+        if (emoji == null)
+            return;
+        Log.i(TAG, "emotion: "+mFaceData.getEmotion());
+        float centerX = translateX(mFaceData.getPosition().x + mFaceData.getWidth() / 2.0f);
+        float centerY = translateY(mFaceData.getPosition().y + mFaceData.getHeight() / 2.0f);
+        float offsetX = scaleX(mFaceData.getWidth() / 2.0f);
+        float offsetY = scaleY(mFaceData.getHeight() / 2.0f);
+
+        // draw a box around the face
+        int left = Math.round(centerX - offsetX);
+        int right = Math.round(centerX + offsetX);
+        int top = Math.round(centerY - offsetY);
+        int bottom = Math.round(centerY + offsetY);
+
+        emoji.setBounds(left, top, right, bottom);
+        emoji.draw(canvas);
+
+        float pointX = translateX(mFaceData.getPosition().x);
+        float pointY = translateY(mFaceData.getPosition().y);
+        canvas.drawCircle(pointX, pointY, DOT_RADIUS, mHintOutlinePaint);
+        canvas.drawText(mFaceData.getEmotion()+" : "+mFaceData.getEmotionCoef(), pointX,
+                pointY + TEXT_OFFSET_Y, mHintTextPaint);
+
     }
 
     private void drawCartoon(Canvas canvas) {
-        final float DOT_RADIUS = 3.0f;
-        final float TEXT_OFFSET_Y = -30.0f;
-
         // Confirm that the face and its features are still visible
         // before drawing any graphics over it.
         if (mFaceData == null) {

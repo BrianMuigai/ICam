@@ -23,8 +23,28 @@
         android:id="@+id/flipButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/switch_cameras" />
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:src="@drawable/ic_switch_camera_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/emrButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:visibility="gone"
+        android:src="@drawable/ic_insert_emoticon_black_24dp"/>
+    <ImageButton
+        android:id="@+id/artButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:visibility="gone"
+        android:src="@drawable/ic_album_black_24dp"/>
 
 </RelativeLayout>
