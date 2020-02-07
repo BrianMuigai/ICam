@@ -34,7 +34,10 @@ The data consists of 48x48 pixel grayscale images of faces.The dataset contains 
 - migrate to tensorflow mobile lite which is optimized for improved performance and reduced apk size
 
 
-
+## Pending tasks
+- <p><em>Face center crop faces from raw image before feeding to CNN model</em></p>
+- <p><em>Rectify model overfitting and apply image augmentation and boost accuracy from 50% which is extreemly low</em></p>
+- <p><em>Stream line integration of our ml model with face tedector model</em></p>
 
 
 

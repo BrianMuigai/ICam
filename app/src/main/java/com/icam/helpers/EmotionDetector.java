@@ -55,7 +55,7 @@ public class EmotionDetector extends Detector<FaceEmotions> {
                     emotionFaces.append(face.getId(), emotionsMap.get(face.getId()));
                 }
 
-//                new ClassifyEmotion().execute(face, mFrame);
+//                new ClassifyEmotion().execute(face, frame.getGrayscaleImageData().array());
             }
         }
         return emotionFaces;
@@ -66,7 +66,7 @@ public class EmotionDetector extends Detector<FaceEmotions> {
         @Override
         protected Void doInBackground(Object... objects) {
             Face face = (Face) objects[0];
-            Frame frame = (Frame) objects[1];
+            byte[] data = (byte[]) objects[1];
             float centerX = face.getPosition().x + face.getWidth() / 2.0f;
             float centerY = face.getPosition().y + face.getHeight() / 2.0f;
             float offsetX = face.getWidth() / 2.0f;
@@ -79,14 +79,15 @@ public class EmotionDetector extends Detector<FaceEmotions> {
             float bottom = centerY + offsetY;
 
             Log.e(TAG, "Face X: "+face.getPosition().x+" y: "+face.getPosition().y+" width: "+face.getWidth()+" height: "+face.getHeight());
-            YuvImage yuvImage = new YuvImage(frame.getGrayscaleImageData().array(), ImageFormat.NV21,
-                    frame.getMetadata().getWidth(), frame.getMetadata().getHeight(), null);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            yuvImage.compressToJpeg(new Rect((int) left, (int) top, (int) right, (int) bottom),
-                    100, outputStream);
-            byte[] jpegArray = outputStream.toByteArray();
+
+//            to be used for face croping
+//            YuvImage yuvImage = new YuvImage(frame.getGrayscaleImageData().array(), ImageFormat.NV21,
+//                    frame.getMetadata().getWidth(), frame.getMetadata().getHeight(), null);
+//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//            yuvImage.compressToJpeg(new Rect((int) left, (int) top, (int) right, (int) bottom),
+//                    100, outputStream);
             Bitmap bitmap = Bitmap.createScaledBitmap(
-                    BitmapFactory.decodeByteArray(jpegArray, 0, jpegArray.length),
+                    BitmapFactory.decodeByteArray(data, 0, data.length),
                     48,
                     48,
                     true
