@@ -6,7 +6,7 @@ The first mile stone was on creating snapchat like filter that draws custom obje
 This was accomplished by the use of google's mobile vision library that eases face detection, facial landmark detections and face tracking
 ### facial landmark detections
 <div>
-	<img src="preview/landmark.png", alt="face landmark image">
+	<img src="preview/landmarks.png", alt="face landmark image">
 	<br>
 </div>
 
@@ -19,6 +19,9 @@ This was accomplished by the use of google's mobile vision library that eases fa
 
 ## Part 2
 In this section, we demonstrate the use of ***Machine Learning*** on top of machine learning: ```google's mobile vision is already an AI library```
+<div>
+	<img src="https://giphy.com/gifs/reaction-robot-1BdJd24oEwvuSvXYb0">
+</div>
 As an attempt to add more flavor to AR, we employed ML in facial emotion detection. 
 <p><em>Tensorflow was our choice framework for ML.</em></p>
 the model, CNN, is trained using tensorflow python framework, saved and then the resulting graph is fed in to the apk.
