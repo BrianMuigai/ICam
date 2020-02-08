@@ -110,13 +110,18 @@ public class EmotionDetector extends Detector<FaceEmotions> {
                 int[] pixelarray = new int[bitmap.getWidth() * bitmap.getHeight()];
                 //copy pixel data from the Bitmap into the 'intArray' array
                 bitmap.getPixels(pixelarray, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
-                float[] floatPixels = new float[pixelarray.length];
+                float[] normalized_pixels = new float[pixelarray.length];
                 for (int i=0; i < pixelarray.length; i++) {
-                    floatPixels[i] = (float)pixelarray[i];
+                    // 0 for white and 255 for black
+                    int pix = pixelarray[i];
+                    int b = pix & 0xff;
+                    //  normalized_pixels[i] = (float)((0xff - b)/255.0);
+                    // normalized_pixels[i] = (float)(b/255.0);
+                    normalized_pixels[i] = (float)(b);
 
                 }
                 try {
-                    final Classification res = mClassifier.recognize(floatPixels);
+                    final Classification res = mClassifier.recognize(normalized_pixels);
                     FaceEmotions faceEmotions = new FaceEmotions();
                     faceEmotions.setFace(face);
                     //if it can't classify, output a 0
