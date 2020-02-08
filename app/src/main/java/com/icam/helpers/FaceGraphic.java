@@ -151,25 +151,29 @@ class FaceGraphic extends GraphicOverlay.Graphic {
         if (mFaceData == null)
             return;
         Drawable emoji = null;
-        switch (mFaceData.getEmotion()) {
-            case FaceEmotions.ANGRY:
-                emoji = angryGraphic;
-                break;
-            case FaceEmotions.DISGUST:
-                emoji = disgustGraphic;
-                break;
-            case FaceEmotions.FEAR:
-                emoji = fearGraphic;
-                break;
-            case FaceEmotions.HAPPY:
-                emoji = happyGraphic;
-                break;
-            case FaceEmotions.SAD:
-                emoji = sadGraphic;
-                break;
-            case FaceEmotions.SUPRISE:
-                emoji = surprisedGraphic;
-                break;
+        if (mFaceData.isSmiling()){
+            emoji = happyGraphic;
+        }else {
+            switch (mFaceData.getEmotion()) {
+                case FaceEmotions.ANGRY:
+                    emoji = angryGraphic;
+                    break;
+                case FaceEmotions.DISGUST:
+                    emoji = disgustGraphic;
+                    break;
+                case FaceEmotions.FEAR:
+                    emoji = fearGraphic;
+                    break;
+                case FaceEmotions.HAPPY:
+                    emoji = happyGraphic;
+                    break;
+                case FaceEmotions.SAD:
+                    emoji = sadGraphic;
+                    break;
+                case FaceEmotions.SUPRISE:
+                    emoji = surprisedGraphic;
+                    break;
+            }
         }
         if (emoji == null)
             return;
