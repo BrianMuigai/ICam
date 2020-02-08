@@ -188,11 +188,9 @@ class FaceGraphic extends GraphicOverlay.Graphic {
         emoji.setBounds(left, top, right, bottom);
         emoji.draw(canvas);
 
-        float pointX = translateX(mFaceData.getPosition().x);
-        float pointY = translateY(mFaceData.getPosition().y);
-        canvas.drawCircle(pointX, pointY, DOT_RADIUS, mHintOutlinePaint);
-        canvas.drawText(mFaceData.getEmotion()+" : "+mFaceData.getEmotionCoef(), pointX,
-                pointY + TEXT_OFFSET_Y, mHintTextPaint);
+        canvas.drawCircle(0, 0, DOT_RADIUS, mHintOutlinePaint);
+        canvas.drawText(mFaceData.getPredictions().toString(), 0,
+                0 + TEXT_OFFSET_Y, mHintTextPaint);
 
     }
 

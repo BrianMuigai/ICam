@@ -100,6 +100,7 @@ public class EmotionTracker extends Tracker<FaceEmotions> {
 
         mFaceData.setEmotion(emotions.getEmotion());
         mFaceData.setEmotionCoef(emotions.getConf());
+        mFaceData.setPredictions(emotions.getPredictions());
 
         mFaceGraphic.update(mFaceData);
     }

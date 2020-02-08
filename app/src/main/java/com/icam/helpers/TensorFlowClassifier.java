@@ -4,7 +4,6 @@ package com.icam.helpers;
 //Provides access to an application's raw asset files;
 
 import android.content.res.AssetManager;
-import android.util.Log;
 
 import com.icam.interfaces.Classifier;
 import com.icam.models.Classification;
@@ -15,19 +14,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Helped from
- * https://github.com/llSourcell/A_Guide_to_Running_Tensorflow_Models_on_Android/blob/master/mnistandroid/app/src/main/java/mariannelinhares/mnistandroid/MainActivity.java
+ * Helped from https://github.com/llSourcell/A_Guide_to_Running_Tensorflow_Models_on_Android/blob/master/mnistandroid/app/src/main/java/mariannelinhares/mnistandroid/MainActivity.java
  */
 
 public class TensorFlowClassifier implements Classifier {
 
-    private static final String TAG = TensorFlowClassifier.class.getSimpleName();
 
     private static final float THRESHOLD = 0.1f;
-    private static volatile TensorFlowClassifier instance;
+
     private TensorFlowInferenceInterface tfHelper;
 
     private String name;
@@ -40,34 +39,9 @@ public class TensorFlowClassifier implements Classifier {
     private float[] output;
     private String[] outputNames;
 
-    private TensorFlowClassifier(AssetManager assetManager, String name,
-                                 String modelPath, String labelFile, int inputSize,
-                                 String inputName, String outputName,
-                                 boolean feedKeepProb, int numClasses) throws IOException {
-        create(assetManager, name, modelPath, labelFile, inputSize, inputName, outputName,
-                feedKeepProb, numClasses);
-
-    }
-
-    private TensorFlowClassifier(){
-
-    }
-
-    public static TensorFlowClassifier getInstance(AssetManager assetManager, String name,
-                                                   String modelPath, String labelFile, int inputSize,
-                                                   String inputName, String outputName,
-                                                   boolean feedKeepProb, int numClasses) throws IOException {
-        if (instance == null){
-            instance = new TensorFlowClassifier();
-            instance = new TensorFlowClassifier(assetManager, name, modelPath, labelFile, inputSize, inputName, outputName,
-                    feedKeepProb, numClasses);
-        }
-        return instance;
-    }
-
     //given a saved drawn model, lets read all the classification labels that are
     //stored and write them to our in memory labels list
-    private List<String> readLabels(AssetManager am, String fileName) throws IOException {
+    private static List<String> readLabels(AssetManager am, String fileName) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(am.open(fileName)));
 
         String line;
@@ -83,11 +57,11 @@ public class TensorFlowClassifier implements Classifier {
     //given a model, its label file, and its metadata
     //fill out a classifier object with all the necessary
     //metadata including output prediction
-    private void create(AssetManager assetManager, String name,
-                        String modelPath, String labelFile, int inputSize, String inputName, String outputName,
-                        boolean feedKeepProb, int numClasses) throws IOException {
+    public static TensorFlowClassifier create(AssetManager assetManager, String name,
+                                              String modelPath, String labelFile, int inputSize, String inputName, String outputName,
+                                              boolean feedKeepProb, int numClasses) throws IOException {
         //intialize a classifier
-        TensorFlowClassifier c = instance;
+        TensorFlowClassifier c = new TensorFlowClassifier();
 
         //store its name, input and output labels
         c.name = name;
@@ -112,6 +86,7 @@ public class TensorFlowClassifier implements Classifier {
 
         c.feedKeepProb = feedKeepProb;
 
+        return c;
     }
 
     @Override
@@ -120,7 +95,7 @@ public class TensorFlowClassifier implements Classifier {
     }
 
     @Override
-    public Classification recognize(final float[] pixels) {
+    public Classification recognize(final int[] pixels) {
 
         //using the interface
         //give it the input name, raw pixels from the drawing,
@@ -142,12 +117,16 @@ public class TensorFlowClassifier implements Classifier {
         //if its above the threshold for accuracy we predefined
         //write it out to the view
         Classification ans = new Classification();
+        Map<String,Float> classificationData = new HashMap<>();
         for (int i = 0; i < output.length; ++i) {
-            Log.i(TAG, "Emotion: "+labels.get(i)+" conf: "+output[i]);
+            classificationData.put(labels.get(i), output[i]);
+            System.out.println(output[i]);
+            System.out.println(labels.get(i));
             if (output[i] > THRESHOLD && output[i] > ans.getConf()) {
                 ans.update(output[i], labels.get(i));
             }
         }
+        ans.putPredictions(classificationData);
 
         return ans;
     }

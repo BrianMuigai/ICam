@@ -21,8 +21,16 @@ public class EmotionsActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setViewType(EMOTION_VIEW);
+        try {
+            classifier=TensorFlowClassifier.create(getAssets(), "CNN",
+                    "opt_em_convnet_5000.pb", "labels.txt", PIXEL_WIDTH,
+                    "input", "output_50", true, 7);
+
+        } catch (final Exception e) {
+            //if they aren't found, throw an error!
+            throw new RuntimeException("Error initializing classifiers!", e);
+        }
         super.onCreate(savedInstanceState);
-        loadModel();
         artButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -31,24 +39,6 @@ public class EmotionsActivity extends BaseActivity {
             }
         });
         artButton.setVisibility(View.VISIBLE);
-    }
-
-    private void loadModel() {
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    classifier=TensorFlowClassifier.getInstance(getAssets(), "CNN",
-                            "opt_em_convnet_5000.pb", "labels.txt", PIXEL_WIDTH,
-                            "input", "output_50", true, 7);
-
-                } catch (final Exception e) {
-                    //if they aren't found, throw an error!
-                    throw new RuntimeException("Error initializing classifiers!", e);
-                }
-            }
-        }).start();
     }
 
     @Override

@@ -6,6 +6,8 @@ import com.google.android.gms.vision.face.Contour;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.Landmark;
 
+import java.util.Map;
+
 public class FaceEmotions {
 
     public static final String ANGRY = "Angry";
@@ -19,6 +21,7 @@ public class FaceEmotions {
     private String emotion;
     private float conf;
     private Face face;
+    private Map<String, Float> predictions;
 
     public Face getFace() {
         return face;
@@ -42,5 +45,13 @@ public class FaceEmotions {
 
     public void setConf(float conf) {
         this.conf = conf;
+    }
+
+    public Map<String, Float> getPredictions() {
+        return predictions;
+    }
+
+    public void setPredictions(Map<String, Float> predictions) {
+        this.predictions = predictions;
     }
 }

@@ -31,6 +31,8 @@ package com.icam.models;
 
 import android.graphics.PointF;
 
+import java.util.Map;
+
 public class FaceData {
 
     private static final String TAG = "FaceData";
@@ -68,6 +70,7 @@ public class FaceData {
 
     private String emotion;
     private float emotionCoef;
+    private Map<String, Float> predictions;
 
     public int getId() {
         return mId;
@@ -259,5 +262,13 @@ public class FaceData {
 
     public void setEmotionCoef(float emotionCoef) {
         this.emotionCoef = emotionCoef;
+    }
+
+    public void setPredictions(Map<String, Float> predictions) {
+        this.predictions = predictions;
+    }
+
+    public Map<String, Float> getPredictions() {
+        return predictions;
     }
 }

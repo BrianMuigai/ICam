@@ -289,7 +289,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .setProminentFaceOnly(mIsFrontFacing)
                 .setMinFaceSize(mIsFrontFacing ? 0.35f : 0.15f)
                 .build();
-        EmotionDetector emotionDetector = new EmotionDetector(detector, classifier);
+        EmotionDetector emotionDetector = new EmotionDetector(context, detector, classifier);
 
         MultiProcessor.Factory<FaceEmotions> factory = new MultiProcessor.Factory<FaceEmotions>() {
             @Override
