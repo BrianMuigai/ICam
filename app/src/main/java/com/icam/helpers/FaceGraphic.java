@@ -188,9 +188,11 @@ class FaceGraphic extends GraphicOverlay.Graphic {
         emoji.setBounds(left, top, right, bottom);
         emoji.draw(canvas);
 
-        canvas.drawCircle(0, 0, DOT_RADIUS, mHintOutlinePaint);
-        canvas.drawText(mFaceData.getPredictions().toString(), 0,
+        if (mFaceData.getPredictions() != null){
+            canvas.drawCircle(0, 0, DOT_RADIUS, mHintOutlinePaint);
+            canvas.drawText(mFaceData.getPredictions().toString(), 0,
                 0 + TEXT_OFFSET_Y, mHintTextPaint);
+        }
 
     }
 

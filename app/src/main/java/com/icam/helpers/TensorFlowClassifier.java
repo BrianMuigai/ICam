@@ -95,7 +95,7 @@ public class TensorFlowClassifier implements Classifier {
     }
 
     @Override
-    public Classification recognize(final int[] pixels) {
+    public Classification recognize(final float[] pixels) {
 
         //using the interface
         //give it the input name, raw pixels from the drawing,

@@ -81,13 +81,24 @@ public class EmotionDetector extends Detector<FaceEmotions> {
 
                 Bitmap image = BitmapFactory.decodeByteArray(data, 0, data.length);
                 if (image == null){
-                    YuvImage yuvImage = new YuvImage(data, ImageFormat.NV21,
-                            frame.getMetadata().getWidth(), frame.getMetadata().getHeight(), null);
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    yuvImage.compressToJpeg(new Rect((int)left, (int)top, (int)(right), (int)(bottom)),
-                            100, outputStream);
-                    byte[] yData = outputStream.toByteArray();
-                    image = BitmapFactory.decodeByteArray(yData, 0, yData.length);
+                    try {
+                        YuvImage yuvImage = new YuvImage(data, ImageFormat.NV21,
+                                frame.getMetadata().getWidth(), frame.getMetadata().getHeight(), null);
+                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                        yuvImage.compressToJpeg(new Rect((int) left, (int) top, (int) (right), (int) (bottom)),
+                                100, outputStream);
+                        byte[] yData = outputStream.toByteArray();
+                        image = BitmapFactory.decodeByteArray(yData, 0, yData.length);
+                    }catch (IllegalArgumentException e){
+                        YuvImage yuvImage = new YuvImage(data, ImageFormat.NV21,
+                                frame.getMetadata().getWidth(), frame.getMetadata().getHeight(), null);
+                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                        yuvImage.compressToJpeg(new Rect(0, 0, frame.getMetadata().getWidth(),
+                                        frame.getMetadata().getHeight()),
+                                100, outputStream);
+                        byte[] yData = outputStream.toByteArray();
+                        image = BitmapFactory.decodeByteArray(yData, 0, yData.length);
+                    }
                 }
                 Bitmap bitmap = Bitmap.createScaledBitmap(
                         image,
@@ -99,18 +110,13 @@ public class EmotionDetector extends Detector<FaceEmotions> {
                 int[] pixelarray = new int[bitmap.getWidth() * bitmap.getHeight()];
                 //copy pixel data from the Bitmap into the 'intArray' array
                 bitmap.getPixels(pixelarray, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
-//                float[] normalized_pixels = new float[pixelarray.length];
-//                for (int i=0; i < pixelarray.length; i++) {
-//                    // 0 for white and 255 for black
-//                    int pix = pixelarray[i];
-//                    int b = pix & 0xff;
-//                    //  normalized_pixels[i] = (float)((0xff - b)/255.0);
-//                    // normalized_pixels[i] = (float)(b/255.0);
-//                    normalized_pixels[i] = (float)(b);
-//
-//                }
+                float[] floatPixels = new float[pixelarray.length];
+                for (int i=0; i < pixelarray.length; i++) {
+                    floatPixels[i] = (float)pixelarray[i];
+
+                }
                 try {
-                    final Classification res = mClassifier.recognize(pixelarray);
+                    final Classification res = mClassifier.recognize(floatPixels);
                     FaceEmotions faceEmotions = new FaceEmotions();
                     faceEmotions.setFace(face);
                     //if it can't classify, output a 0

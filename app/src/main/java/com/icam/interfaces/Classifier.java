@@ -9,5 +9,5 @@ import com.icam.models.Classification;
 public interface Classifier {
     String name();
 
-    Classification recognize(final int[] pixels);
+    Classification recognize(final float[] pixels);
 }
